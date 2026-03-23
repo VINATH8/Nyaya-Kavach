@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Nyaya Kavach - File & Track Complaints</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="shield-icon"><img src="flogo.jpg" alt="logo"></div>
+                <span>Nyaya Kavach</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/frontend/index.html">Home</a></li>
+                <li><a href="complaint.html" class="active">File Complaint</a></li>
+                <li><a href="track.html">Track Case</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="page-nav">
+                <button class="page-nav-btn active" onclick="showPage('complaint')">📋 File Complaint</button>
+                <button class="page-nav-btn" onclick="showPage('track')"><a href="/frontend/track.html">🔍 Track Complaint</a></button>
+            </div>
+
+            
+            <div id="complaint-page" class="page-section active">
+                <div class="complaint-header">
+                    <h1>File Your Complaint</h1>
+                    <p>Follow the simple steps below to file your complaint securely. Your identity will be verified through Aadhar authentication to ensure authenticity.</p>
+                </div>
+
+                
+                <div class="complaint-steps">
+                    <div class="step-card"><div class="step-number">1</div><h3>Identity Verification</h3><p>Verify your identity using Aadhar number for security and authenticity</p></div>
+                    <div class="step-card"><div class="step-number">2</div><h3>Complaint Details</h3><p>Provide comprehensive details about the incident and circumstances</p></div>
+                    <div class="step-card"><div class="step-number">3</div><h3>Upload Evidence</h3><p>Upload photos, documents, videos or audio files as supporting evidence</p></div>
+                    <div class="step-card"><div class="step-number">4</div><h3>Submit & Track</h3><p>Submit your complaint and receive a unique case ID for tracking</p></div>
+                </div>
+
+                
+                <div class="aadhar-verification">
+                    <h3>🔐 Identity Verification Required</h3>
+                    <p>Please verify your identity using Aadhar to proceed with complaint filing</p>
+                    <div class="verification-form">
+                        <input type="text" id="aadharNumber" placeholder="Enter 12-digit Aadhar Number" maxlength="12" pattern="\d{12}">
+                        <button class="btn" type="button" id="verifyBtn">🔍 Verify Aadhar</button>
+                        <div class="verification-status" id="verificationStatus">
+                            <span style="color: #FFC107;">⏳ Verification Pending</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="complaint-form-container" id="complaintFormContainer" style="opacity: 0.5; pointer-events: none;">
+                    <form id="complaintForm">
+                        <div class="form-sections">
+                            
+                            <div class="form-section">
+                                <h3>📝 Basic Information</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="complaintType">Complaint Type *</label>
+                                        <select id="complaintType" required>
+                                            <option value="">Select Complaint Type</option>
+                                            <option value="theft">Theft / Burglary</option>
+                                            <option value="fraud">Fraud / Cheating</option>
+                                            <option value="cybercrime">Cybercrime</option>
+                                            <option value="domestic">Domestic Violence</option>
+                                            <option value="harassment">Harassment / Stalking</option>
+                                            <option value="assault">Physical Assault</option>
+                                            <option value="corruption">Corruption</option>
+                                            <option value="property">Property Dispute</option>
+                                            <option value="traffic">Traffic Violation</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="priority">Priority Level *</label>
+                                        <select id="priority" required>
+                                            <option value="">Select Priority</option>
+                                            <option value="low">Low Priority</option>
+                                            <option value="medium" selected>Medium Priority</option>
+                                            <option value="high">High Priority</option>
+                                            <option value="urgent">Urgent</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            <div class="form-section">
+                                <h3>📅 Incident Details</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="incidentDate">Date & Time of Incident *</label>
+                                        <input type="datetime-local" id="incidentDate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="location">Location of Incident *</label>
+                                        <input type="text" id="location" placeholder="Enter detailed address with landmarks" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Detailed Description of Incident *</label>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <textarea id="description" rows="5" placeholder="Describe what happened in detail..." required></textarea>
+                                        <button type="button" id="micButton" class="btn" style="padding: 8px 12px;">🎙️</button>
+                                    </div>
+                                    <small id="speechStatus" style="color: #0f0; display: none;">Listening...</small>
+                                </div>
+                            </div>
+
+                            
+                            <div class="form-section">
+                                <h3>👤 Personal Information</h3>
+                                <div class="form-grid">
+                                    <div class="form-group"><label for="fullName">Full Name *</label><input type="text" id="fullName" placeholder="As per Aadhar card" required></div>
+                                    <div class="form-group"><label for="phone">Phone Number *</label><input type="tel" id="phone" placeholder="10-digit mobile number" required></div>
+                                    <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" placeholder="For case updates and notifications"></div>
+                                    <div class="form-group"><label for="address">Your Address *</label><input type="text" id="address" placeholder="Your current residential address" required></div>
+                                </div>
+                            </div>
+
+                            
+                            <div class="form-section">
+                                <h3>📎 Evidence & Witnesses</h3>
+                                <div class="form-group">
+                                    <label for="evidence">Upload Evidence Files</label>
+                                    <div class="file-upload-area" id="dropArea">
+                                        <div style="font-size: 2rem; margin-bottom: 1rem;">📁</div>
+                                        <p><strong>Click to upload or drag & drop files</strong></p>
+                                        <p>Supported: Images (JPG, PNG), PDFs, Audio (MP3), Video (MP4)</p>
+                                        <p style="font-size: 0.9rem; opacity: 0.7;">Max file size: 10MB per file</p>
+                                    </div>
+                                    <input type="file" id="evidence" multiple accept=".jpg,.jpeg,.png,.pdf,.mp4,.mp3,.wav" style="display: none;">
+                                    <div id="fileList"></div>
+                                </div>
+                                <div class="form-group"><label for="witnesses">Witness Information</label><textarea id="witnesses" rows="3" placeholder="Names, contact details, and addresses of witnesses (if any)"></textarea></div>
+                            </div>
+
+                            
+                            <div class="form-section">
+                                <h3>⚙️ Additional Options</h3>
+                                <div class="form-group"><input type="checkbox" id="anonymous" style="width: auto; margin-right: 10px;"><label for="anonymous">File as anonymous complaint</label></div>
+                                <div class="form-group"><input type="checkbox" id="smsUpdates" style="width: auto; margin-right: 10px;" checked><label for="smsUpdates">Receive SMS updates</label></div>
+                                <div class="form-group"><input type="checkbox" id="emailUpdates" style="width: auto; margin-right: 10px;" checked><label for="emailUpdates">Receive email updates</label></div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 2rem;">
+                            <button type="submit" class="btn" id="submitBtn">🚀 Submit Complaint</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

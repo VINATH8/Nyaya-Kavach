@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyaya Kavach - Track Complaint</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="shield-icon"><img src="flogo.jpg" alt="logo"/></div>
+                <span>Nyaya Kavach</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="complaint.html">File Complaint</a></li>
+                <li><a href="track.html" class="active">Track Case</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="track-header">
+                <h1>Track Your Complaint</h1>
+                <p>Enter your case details to get real-time updates on your complaint status and progress</p>
+            </div>
+
+            <!-- Tracking Options -->
+            <div class="track-options">
+                <div class="track-option active" onclick="selectTrackOption('case-id', this)">
+                    <span class="track-option-icon">🆔</span>
+                    <h3>Case ID</h3>
+                    <p>Track using Case/FIR number</p>
+                </div>
+                <div class="track-option" onclick="selectTrackOption('aadhar', this)">
+                    <span class="track-option-icon">🔐</span>
+                    <h3>Aadhar Number</h3>
+                    <p>Track using Aadhar verification</p>
+                </div>
+                <div class="track-option" onclick="selectTrackOption('phone', this)">
+                    <span class="track-option-icon">📱</span>
+                    <h3>Phone Number</h3>
+                    <p>Track using registered mobile</p>
+                </div>
+            </div>
+
+            <!-- Search Input -->
+            <div class="track-search">
+                <div class="search-input-group">
+                    <input type="text" id="trackInput" placeholder="Enter Case ID">
+                    <button class="btn" onclick="trackComplaint()">🔍 Track</button>
+                </div>
+            </div>
+
+            <!-- Case Details -->
+            <div id="caseDetails" class="case-details">
+                <h2>Case Information</h2>
+                <div id="caseInfoGrid" class="case-info-grid"></div>
+
+                <h2>Timeline</h2>
+                <div id="caseTimeline" class="timeline"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/track.js"></script>
+</body>
+</html>

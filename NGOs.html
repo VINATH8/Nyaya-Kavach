@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Partnership - Nyaya Kavach</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a23 0%, #1a1a3e 100%);
+            color: white;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+       
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .shield-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #4CAF50;
+        }
+
+        
+        .hero {
+            padding: 100px 0 80px;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a3e 0%, #2a2a5e 100%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            opacity: 0.9;
+        }
+
+        
+        .registration-section {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .registration-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .registration-info {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .registration-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+            width: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.4);
+        }
+
+        
+        .services-section {
+            padding: 80px 0;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #4CAF50, #81C784);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .service-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 24px;
+        }
+
+        
+        .benefits-section {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .benefits-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        
+        .resources-section {
+            padding: 80px 0;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .resource-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+        }
+
+        
+        .contact-section {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 24px;
+        }
+
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .registration-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(226, 213, 213, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="shield-icon"><img src="flogo.jpg" alt="Nyaya Kavach Logo"></div>
+                <span>Nyaya Kavach</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#registration">Register NGO</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>NGO Partnership Program</h1>
+            <p class="hero-subtitle">
+                Join hands with Nyaya Kavach to create a stronger, more inclusive justice delivery system. 
+                Together, we can ensure no victim is left without support and every case receives the attention it deserves.
+            </p>
+        </div>
+    </section>
+
+    <section class="registration-section" id="registration">
+        <div class="container">
+            <h2 class="section-title">Register Your NGO</h2>
+            
+            <div class="registration-grid">
+                <div class="registration-info fade-in">
+                    <h3>Partnership Requirements</h3>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: #4CAF50;">✓</span>
+                            Registered NGO under Section 8 or 12A
+                        </li>
+                        <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: #4CAF50;">✓</span>
+                            Minimum 2 years of operational experience
+                        </li>
+                        <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: #4CAF50;">✓</span>
+                            Focus on legal aid, victim support, or social justice
+                        </li>
+                        <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: #4CAF50;">✓</span>
+                            Valid FCRA registration (if applicable)
+                        </li>
+                        <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: #4CAF50;">✓</span>
+                            Qualified legal professionals on staff
+                        </li>
+                    </ul>
+                    
+                    <h3 style="margin-top: 2rem;">Documents Required</h3>
+                    <ul style="list-style-type: none; padding-left: 0; margin-top: 1rem;">
+                        <li style="margin-bottom: 0.5rem; color: rgba(255,255,255,0.8);">• NGO Registration Certificate</li>
+                        <li style="margin-bottom: 0.5rem; color: rgba(255,255,255,0.8);">• 12A/80G Certification</li>
+                        <li style="margin-bottom: 0.5rem; color: rgba(255,255,255,0.8);">• Audited Financial Statements</li>
+                        <li style="margin-bottom: 0.5rem; color: rgba(255,255,255,0.8);">• Board Resolution</li>
+                        <li style="margin-bottom: 0.5rem; color: rgba(255,255,255,0.8);">• PAN & GST Registration</li>
+                    </ul>
+                </div>
+
+                <div class="registration-form fade-in">
+                    <h3>NGO Registration Form</h3>
+                    <form id="ngoRegistrationForm">
+                        <div class="form-group">
+                            <label for="ngoName">NGO Name</label>
+                            <input type="text" id="ngoName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registrationNumber">Registration Number</label>
+                            <input type="text" id="registrationNumber" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ngoType">NGO Type</label>
+                            <select id="ngoType" required>
+                                <option value="">Select Type</option>
+                                <option value="trust">Trust</option>
+                                <option value="society">Society</option>
+                                <option value="section8">Section 8 Company</option>
+                                <option value="foundation">Foundation</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="focusArea">Primary Focus Area</label>
+                            <select id="focusArea" required>
+                                <option value="">Select Focus Area</option>
+                                <option value="legal-aid">Legal Aid</option>
+                                <option value="women-rights">Women's Rights</option>
+                                <option value="child-protection">Child Protection</option>
+                                <option value="human-rights">Human Rights</option>
+                                <option value="victim-support">Victim Support</option>
+                                <option value="criminal-justice">Criminal Justice Reform</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactPerson">Contact Person</label>
+                            <input type="text" id="contactPerson" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Registered Address</label>
+                            <textarea id="address" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="experience">Years of Experience</label>
+                            <input type="number" id="experience" min="2" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="services">Services You Can Provide</label>
+                            <textarea id="services" rows="4" placeholder="Describe the services your NGO can provide to victims and cases..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="cta-button">Submit Registration</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section" id="services">
+        <div class="container">
+            <h2 class="section-title">Services You Can Provide</h2>
+            
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-icon">⚖️</div>
+                    <h3>Legal Aid Services</h3>
+                    <p>Provide free legal consultation and representation to victims who cannot afford legal services.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">🤝</div>
+                    <h3>Victim Support</h3>
+                    <p>Offer emotional support, counseling, and rehabilitation services to crime victims.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">🏠</div>
+                    <h3>Shelter Services</h3>
+                    <p>Provide temporary shelter and safe housing for victims of domestic violence and trafficking.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">🎓</div>
+                    <h3>Legal Awareness</h3>
+                    <p>Conduct workshops and seminars to educate communities about their legal rights and procedures.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">👥</div>
+                    <h3>Community Mediation</h3>
+                    <p>Facilitate alternative dispute resolution and community-based justice mechanisms.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">📞</div>
+                    <h3>Helpline Services</h3>
+                    <p>Operate 24/7 helplines for immediate assistance and crisis intervention.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits-section">
+        <div class="container">
+            <h2 class="section-title">Partnership Benefits</h2>
+            
+            <ul class="benefits-list">
+                <li class="benefit-item fade-in">
+                    <span class="benefit-icon">🎯</span>
+                    <div>
+                        <h3>Direct Case Referrals</h3>
+                        <p>Receive direct referrals from the Nyaya Kavach system for cases that require NGO intervention and support services.</p>
+                    </div>
+                </li>
+                
+                <li class="benefit-item fade-in">
+                    <span class="benefit-icon">💰</span>
+                    <div>
+                        <h3>Funding Opportunities</h3>
+                        <p>Access government funding schemes and grants specifically allocated for partner NGOs in the justice delivery ecosystem.</p>
+                    </div>
+                </li>
+                
+                <li class="benefit-item fade-in">
+                    <span class="benefit-icon">📊</span>
+                    <div>
+                        <h3>Data & Analytics</h3>
+                        <p>Access comprehensive data and analytics to measure impact, track outcomes, and improve service delivery.</p>
+                    </div>
+                </li>
+                
+                <li class="benefit-item fade-in">
+                    <span class="benefit-icon">🏆</span>
+                    <div>
+                        <h3>Recognition & Awards</h3>
+                        <p>Official recognition from government agencies and opportunities for awards and certifications for outstanding service.</p>
+                    </div>
+                </li>
+                
+                <li class="benefit-item fade-in">
+                    <span class="benefit-icon">🎓</span>
+                    <div>
+                        <h3>Training & Capacity Building</h3>
+                        <p>Regular training programs, workshops, and capacity building sessions to enhance your team's skills and knowledge.</p>
+                    </div>
+                </li>
+                
+                <li class="benefit-item fade-in">
+                    <span class="benefit-icon">🌐</span>
+                    <div>
+                        <h3>Network Access</h3>
+                        <p>Connect with other NGOs, legal professionals, and government agencies to build a stronger support network.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="resources-section" id="resources">
+        <div class="container">
+            <h2 class="section-title">Resources & Downloads</h2>
+            
+            <div class="resource-grid">
+                <div class="resource-card fade-in">
+                    <h3>Partnership Handbook</h3>
+                    <p>Complete guide for NGO partners including procedures, protocols, and best practices.</p>
+                    <a href="#" class="download-btn" onclick="downloadResource('handbook')">Download PDF</a>
+                </div>
+                
+                <div class="resource-card fade-in">
+                    <h3>Legal Forms & Templates</h3>
+                    <p>Standard forms, templates, and legal documents for various case types and victim support.</p>
+                    <a href="#" class="download-btn" onclick="downloadResource('forms')">Download ZIP</a>
+                </div>
+                
+                <div class="resource-card fade-in">
+                    <h3>Training Materials</h3>
+                    <p>Training modules, presentations, and educational materials for staff development.</p>
+                    <a href="#" class="download-btn" onclick="downloadResource('training')">Access Portal</a>
+                </div>
+                
+                <div class="resource-card fade-in">
+                    <h3>Case Management System</h3>
+                    <p>User manual and guides for the integrated case management system for partner NGOs.</p>
+                    <a href="#" class="download-btn" onclick="downloadResource('cms')">View Guide</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            
+            <div class="contact-grid">
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">📧</div>
+                    <h3>Email Support</h3>
+                    <p>ngo-partnerships@nyayakavach.gov.in</p>
+                    <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">Response within 24 hours</p>
+                </div>
+                
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">📞</div>
+                    <h3>Phone Support</h3>
+                    <p>1800-123-NGO1 (6401)</p>
+                    <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">Mon-Fri: 9 AM - 6 PM</p>
+                </div>
+                
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">💬</div>
+                    <h3>Live Chat</h3>
+                    <p>Available on main portal</p>
+                    <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">24/7 AI Assistant</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <div class="notification" id="notification"></div>
+
+    <script>
+        
+        document.getElementById('ngoRegistrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const ngoId = 'NGO' + new Date().getFullYear() + Math.random().toString().substr(2, 6);
+            
+            
+            showNotification('Registration submitted successfully! Your NGO ID is: ' + ngoId, 'success');
+            
+            
+            this.reset();
+        });
+
+        
+        function downloadResource(type) {
+            const resources = {
+                'handbook': 'Partnership Handbook',
+                'forms': 'Legal Forms Package',
+                'training': 'Training Portal',
+                'cms': 'Case Management Guide'
+            };
+            
+            showNotification(`Accessing ${resources[type]}...`, 'info');
+        }
+
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification show ${type}`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+       
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+           
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
