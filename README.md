@@ -1,1 +1,3 @@
-# NYAYA-KAVACH1
+# NYAYA-KAVACH
+
+Naya Kavach is an anonymous complaint registration platform designed to make reporting safer, faster, and more accessible for everyone. It provides a secure interface where users can submit complaints without revealing their identity, ensuring protection against fear or retaliation. The system connects three key stakeholders through dedicated terminals: a User portal for submitting and tracking complaints, a Police terminal for verified case handling and action, and an NGO terminal to support victims and ensure accountability. Built with a focus on privacy, transparency, and real-world impact, Naya Kavach aims to bridge the gap between citizens and support systems, enabling timely intervention and fostering trust in reporting mechanisms.
