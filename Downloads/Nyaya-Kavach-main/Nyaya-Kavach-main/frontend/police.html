@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Police Dashboard - Nyaya Kavach</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+        }
+
+        .officer-profile {
+            text-align: center;
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .officer-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .officer-info h3 {
+            color: #4CAF50;
+            margin-bottom: 0.5rem;
+        }
+
+        .officer-info p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .nav-menu {
+            padding: 2rem 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(76, 175, 80, 0.2);
+            border-right: 3px solid #4CAF50;
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .action-button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .stat-change {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .positive { color: #4CAF50; }
+        .negative { color: #f44336; }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #4CAF50;
+        }
+
+        /* Cases Table */
+        .cases-table {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .table-header {
+            background: rgba(76, 175, 80, 0.2);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            color: white;
+            width: 250px;
+        }
+
+        .filter-dropdown {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            color: #4CAF50;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .priority-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .priority-high { background: rgba(244, 67, 54, 0.3); color: #f44336; }
+        .priority-medium { background: rgba(255, 152, 0, 0.3); color: #ff9800; }
+        .priority-low { background: rgba(76, 175, 80, 0.3); color: #4CAF50; }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-new { background: rgba(33, 150, 243, 0.3); color: #2196F3; }
+        .status-investigating { background: rgba(255, 193, 7, 0.3); color: #FFC107; }
+        .status-closed { background: rgba(76, 175, 80, 0.3); color: #4CAF50; }
+
+        /* Case Detail Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            margin: 2% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #4CAF50;
+        }
+
+        .case-detail-section {
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 3px solid #4CAF50;
+        }
+
+        .evidence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .evidence-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .evidence-item:hover {
+            transform: scale(1.05);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #4CAF50;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-action-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.2);
+        }
+
+        .quick-action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #4CAF50;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -280px;
+                height: 100vh;
+                z-index: 999;
+                transition: left 0.3s ease;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+                padding: 1rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="officer-profile">
+                <div class="officer-avatar">👮</div>
+                <div class="officer-info">
+                    <h3>Inspector Raj Kumar</h3>
+                    <p>Badge: 12345</p>
+                    <p>Station: Central Police</p>
+                    <p>Shift: Day (8AM-8PM)</p>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item active" onclick="showSection('dashboard')">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="showSection('cases')">
+                    <span class="nav-icon">📋</span>
+                    <span>Active Cases</span>
+                </div>
+                <div class="nav-item" onclick="showSection('new-complaints')">
+                    <span class="nav-icon">🆕</span>
+                    <span>New Complaints</span>
+                </div>
+                <div class="nav-item" onclick="showSection('investigations')">
+                    <span class="nav-icon">🔍</span>
+                    <span>Investigations</span>
+                </div>
+                <div class="nav-item" onclick="showSection('evidence')">
+                    <span class="nav-icon">📁</span>
+                    <span>Evidence Room</span>
+                </div>
+                <div class="nav-item" onclick="showSection('reports')">
+                    <span class="nav-icon">📈</span>
+                    <span>Reports</span>
+                </div>
+                <div class="nav-item" onclick="showSection('team')">
+                    <span class="nav-icon">👥</span>
+                    <span>Team</span>
+                </div>
+                <div class="nav-item" onclick="showSection('settings')">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 id="page-title">Dashboard</h1>
+                <div class="header-actions">
+                    <button class="action-button" onclick="showEmergencyAlert()">🚨 Emergency</button>
+                    <button class="action-button" onclick="showAIAssistant()">🤖 AI Assistant</button>
+                    <button class="action-button" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div class="content-section active" id="dashboard-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon" style="background: linear-gradient(45deg, #2196F3, #64B5F6);">📋</div>
+                            <div class="stat-value">24</div>
+                        </div>
+                        <div class="stat-label">Active Cases</div>
+                        <div class="stat-change positive">+3 this week</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon" style="background: linear-gradient(45deg, #FF9800, #FFB74D);">⏰</div>
+                            <div class="stat-value">7</div>
+                        </div>
+                        <div class="stat-label">Pending Reviews</div>
+                        <div class="stat-change negative">Due today</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon" style="background: linear-gradient(45deg, #4CAF50, #81C784);">✅</div>
+                            <div class="stat-value">156</div>
+                        </div>
+                        <div class="stat-label">Resolved Cases</div>
+                        <div class="stat-change positive">95% success rate</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon" style="background: linear-gradient(45deg, #9C27B0, #BA68C8);">⚡</div>
+                            <div class="stat-value">2.3</div>
+                        </div>
+                        <div class="stat-label">Avg Response (Days)</div>
+                        <div class="stat-change positive">-0.5 from last month</div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <div class="quick-action-card" onclick="showSection('new-complaints')">
+                        <div class="quick-action-icon">🆕</div>
+                        <h3>Review New Complaints</h3>
+                        <p>7 complaints awaiting review</p>
+                    </div>
+                    
+                    <div class="quick-action-card" onclick="updateCaseStatus()">
+                        <div class="quick-action-icon">📝</div>
+                        <h3>Update Case Status</h3>
+                        <p>Quick status updates</p>
+                    </div>
+                    
+                    <div class="quick-action-card" onclick="uploadEvidence()">
+                        <div class="quick-action-icon">📎</div>
+                        <h3>Upload Evidence</h3>
+                        <p>Add case evidence</p>
+                    </div>
+                    
+                    <div class="quick-action-card" onclick="generateReport()">
+                        <div class="quick-action-icon">📊</div>
+                        <h3>Generate Reports</h3>
+                        <p>Monthly performance reports</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Cases Section -->
+            <div class="content-section" id="cases-section">
+                <div class="section-header">
+                    <h2 class="section-title">Active Cases</h2>
+                    <button class="action-button" onclick="exportCases()">Export Data</button>
+                </div>
+                
+                <div class="cases-table">
+                    <div class="table-header">
+                        <div class="search-filter">
+                            <input type="text" class="search-input" placeholder="Search cases..." id="case-search">
+                            <select class="filter-dropdown" id="priority-filter">
+                                <option value="">All Priorities</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                            <select class="filter-dropdown" id="status-filter">
+                                <option value="">All Status</option>
+                                <option value="new">New</option>
+                                <option value="investigating">Investigating</option>
+                                <option value="closed">Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Case ID</th>
+                                <th>Type</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Filed Date</th>
+                                <th>Last Update</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cases-tbody">
+                            <tr onclick="showCaseDetail('FIR2024001234')">
+                                <td>FIR2024001234</td>
+                                <td>Theft</td>
+                                <td><span class="priority-badge priority-high">High</span></td>
+                                <td><span class="status-badge status-investigating">Investigating</span></td>
+                                <td>Jan 15, 2024</td>
+                                <td>Jan 18, 2024</td>
+                                <td>
+                                    <button onclick="updateCase(event, 'FIR2024001234')" style="background: #4CAF50; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; cursor: pointer;">Update</button>
+                                </td>
+                            </tr>
+                            <tr onclick="showCaseDetail('FIR2024001235')">
+                                <td>FIR2024001235</td>
+                                <td>Cybercrime</td>
+                                <td><span class="priority-badge priority-medium">Medium</span></td>
+                                <td><span class="status-badge status-new">New</span></td>
+                                <td>Jan 16, 2024</td>
+                                <td>Jan 16, 2024</td>
+                                <td>
+                                    <button onclick="updateCase(event, 'FIR2024001235')" style="background: #4CAF50; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; cursor: pointer;">Update</button>
+                                </td>
+                            </tr>
+                            <tr onclick="showCaseDetail('FIR2024001236')">
+                                <td>FIR2024001236</td>
+                                <td>Fraud</td>
+                                <td><span class="priority-badge priority-high">High</span></td>
+                                <td><span class="status-badge status-investigating">Investigating</span></td>
+                                <td>Jan 14, 2024</td>
+                                <td>Jan 17, 2024</td>
+                                <td>
+                                    <button onclick="updateCase(event, 'FIR2024001236')" style="background: #4CAF50; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; cursor: pointer;">Update</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Other sections would be implemented similarly -->
+            <div class="content-section" id="new-complaints-section">
+                <div class="section-header">
+                    <h2 class="section-title">New Complaints</h2>
+                    <button class="action-button" onclick="acceptAllComplaints()">Accept All</button>
+                </div>
+                <p>New complaints section - to be implemented with complaint review interface</p>
+            </div>
+
+            <div class="content-section" id="investigations-section">
+                <div class="section-header">
+                    <h2 class="section-title">Investigation Tools</h2>
+                </div>
+                <p>Investigation management tools - timeline tracking, evidence correlation, team coordination</p>
+            </div>
+
+            <div class="content-section" id="evidence-section">
+                <div class="section-header">
+                    <h2 class="section-title">Evidence Management</h2>
+                </div>
+                <p>Digital evidence room - upload, categorize, chain of custody management</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Detail Modal -->
+    <div id="case-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCaseModal()">&times;</span>
+            <h2>Case Details: <span id="case-modal-title">FIR2024001234</span></h2>
+            
+            <div class="case-detail-section">
+                <h3>Case Information</h3>
+                <p><strong>Type:</strong> Theft</p>
+                <p><strong>Priority:</strong> High</p>
+                <p><strong>Status:</strong> Under Investigation</p>
+                <p><strong>Filed Date:</strong> January 15, 2024</p>
+                <p><strong>Location:</strong> Market Street, Central District</p>
+                <p><strong>Complainant:</strong> John Doe (Aadhar Verified)</p>
+            </div>
+
+            <div class="case-detail-section">
+                <h3>Description</h3>
+                <p>Motorcycle theft from parking area outside shopping mall. CCTV footage available. Suspect identified through facial recognition.</p>
+            </div>
+
+            <div class="case-detail-section">
+                <h3>Evidence</h3>
+                <div class="evidence-grid">
+                    <div class="evidence-item">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📹</div>
+                        <p>CCTV Footage</p>
+                    </div>
+                    <div class="evidence-item">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📸</div>
+                        <p>Scene Photos</p>
+                    </div>
+                    <div class="evidence-item">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">👤</div>
+                        <p>Witness Statement</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-detail-section">
+                <h3>Investigation Timeline</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Complaint Filed</h4>
+                        <p>Initial complaint registered by complainant</p>
+                        <small>Jan 15, 2024 - 10:30 AM</small>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Case Assigned</h4>
+                        <p>Case assigned to investigating officer</p>
+                        <small>Jan 15, 2024 - 2:15 PM</small>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Evidence Collection</h4>
+                        <p>CCTV footage obtained, scene photographed</p>
+                        <small>Jan 16, 2024 - 9:00 AM</small>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Suspect Identification</h4>
+                        <p>Suspect identified through facial recognition</p>
+                        <small>Jan 17, 2024 - 3:30 PM</small>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="action-button" onclick="updateCaseStatus()">Update Status</button>
+                <button class="action-button" onclick="addEvidence()">Add Evidence</button>
+                <button class="action-button" onclick="generateCaseReport()">Generate Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Navigation Functions
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.add('active');
+            
+            // Update nav active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // Update page title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'cases': 'Active Cases',
+                'new-complaints': 'New Complaints',
+                'investigations': 'Investigations',
+                'evidence': 'Evidence Management',
+                'reports': 'Reports',
+                'team': 'Team Management',
+                'settings': 'Settings'
+            };
+            document.getElementById('page-title').textContent = titles[sectionName] || 'Dashboard';
+        }
+        </script>
+</body>
+</html>    
+        

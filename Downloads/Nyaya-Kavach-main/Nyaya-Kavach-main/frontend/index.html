@@ -1,0 +1,2137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyaya Kavach - Shield of Justice</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a23 0%, #1a1a3e 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .shield-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #4CAF50;
+        }
+
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, #0a0a23 0%, #1a1a3e 50%, #2a2a5e 100%);
+            text-align: center;
+            padding: 120px 20px 60px;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .user-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1000px;
+            width: 100%;
+            margin-bottom: 4rem;
+        }
+
+        .user-type-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .user-type-card:nth-child(1) { animation-delay: 0.4s; }
+        .user-type-card:nth-child(2) { animation-delay: 0.6s; }
+        .user-type-card:nth-child(3) { animation-delay: 0.8s; }
+
+        .user-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #4CAF50, #81C784);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .user-type-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .user-type-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(76, 175, 80, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .user-type-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .user-type-card:nth-child(1) .user-type-icon {
+            background: linear-gradient(45deg, #3498DB, #5DADE2);
+        }
+
+        .user-type-card:nth-child(2) .user-type-icon {
+            background: linear-gradient(45deg, #E74C3C, #F1948A);
+        }
+
+        .user-type-card:nth-child(3) .user-type-icon {
+            background: linear-gradient(45deg, #F39C12, #F8C471);
+        }
+
+        .user-type-card:hover .user-type-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .user-type-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #4CAF50;
+        }
+
+        .user-type-card p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+
+        .user-type-button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .user-type-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        .main-cta {
+            margin-top: 3rem;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+            font-weight: 600;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.4);
+        }
+
+        
+        .features {
+            padding: 6rem 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #4CAF50, #81C784);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 24px;
+        }
+
+        
+        .complaint-form {
+            background: rgba(9, 9, 9, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+            border: 1px solid rgba(14, 152, 50, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .aadhar-verification {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .verification-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-top: 1rem;
+        }
+
+        .status-pending { color: #FFC107; }
+        .status-verified { color: #4CAF50; }
+        .status-failed { color: #F44336; }
+
+        /* AI Assistant */
+        .ai-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .ai-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #6C5CE7, #A29BFE);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .ai-button:hover {
+            transform: scale(1.1);
+        }
+
+        .ai-chat {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .ai-chat-header {
+            background: linear-gradient(45deg, #6C5CE7, #A29BFE);
+            padding: 15px;
+            border-radius: 20px 20px 0 0;
+            color: white;
+            font-weight: bold;
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            color: #333;
+        }
+
+        .ai-message {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: #6C5CE7;
+            color: white;
+            margin-left: auto;
+        }
+
+        .ai-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .ai-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+
+        .ai-input button {
+            background: #6C5CE7;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        
+        .case-tracking {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #4CAF50, #81C784);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #81C784);
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(108, 92, 231, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0); }
+        }
+
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+            }
+            
+            .user-types {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .ai-chat {
+                width: 300px;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+        .site-footer {
+    background: linear-gradient(135deg, #0f0f2a 0%, #1a1a3e 50%, #0a0a23 100%);
+    padding: 4rem 0 1rem;
+    margin-top: 4rem;
+    border-top: 2px solid rgba(76, 175, 80, 0.3);
+    position: relative;
+}
+
+.site-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #4CAF50, transparent);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.footer-section h4 {
+    color: #4CAF50;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(76, 175, 80, 0.3);
+    display: inline-block;
+}
+
+.footer-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.footer-logo .shield-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    margin-bottom: 0.5rem;
+}
+
+.footer-logo h3 {
+    color: #4CAF50;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.footer-logo p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin: 0.2rem 0 0 0;
+}
+
+.footer-description {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin: 1rem 0 2rem 0;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.social-links a:hover {
+    background: rgba(76, 175, 80, 0.3);
+    transform: translateY(-2px);
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0.2rem 0;
+    display: block;
+}
+
+.footer-links a:hover {
+    color: #4CAF50;
+    padding-left: 0.5rem;
+}
+
+.emergency-contacts, .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 10px;
+    border-left: 3px solid #4CAF50;
+}
+
+.contact-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+}
+
+.contact-item strong {
+    color: #4CAF50;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.contact-item p {
+    color: white;
+    margin: 0;
+    font-weight: 600;
+}
+
+.contact-item small {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 0.2rem;
+}
+
+.footer-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #4CAF50;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-bottom-left p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-subtitle {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.2rem !important;
+}
+
+.security-badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+c
+.security-badge {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .footer-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .security-badges {
+        justify-content: center;
+    }
+    
+    .contact-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .emergency-contacts .contact-item {
+        flex-direction: row;
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .security-badges {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+.footer-section {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.footer-section:nth-child(1) { animation-delay: 0.1s; }
+.footer-section:nth-child(2) { animation-delay: 0.2s; }
+.footer-section:nth-child(3) { animation-delay: 0.3s; }
+.footer-section:nth-child(4) { animation-delay: 0.4s; }
+.footer-section:nth-child(5) { animation-delay: 0.5s; }
+
+.stat-item {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.stat-item:nth-child(1) { animation-delay: 0.6s; }
+.stat-item:nth-child(2) { animation-delay: 0.7s; }
+.stat-item:nth-child(3) { animation-delay: 0.8s; }
+.stat-item:nth-child(4) { animation-delay: 0.9s; }
+
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.scroll-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+}
+.auth-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(10px);
+}
+
+.auth-modal-content {
+    background: linear-gradient(135deg, #1a1a3e 0%, #2a2a5e 100%);
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 90%;
+    max-width: 450px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.auth-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-modal-header h2 {
+    color: #4CAF50;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: rotate(90deg);
+}
+
+.auth-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.auth-form .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #4CAF50;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.auth-form input,
+.auth-form select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.auth-form input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.auth-form select option {
+    background: #1a1a3e;
+    color: white;
+}
+
+.auth-button {
+    width: 100%;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.auth-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4);
+}
+
+.auth-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.auth-links {
+    margin-top: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.auth-links a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+    color: #81C784;
+    text-decoration: underline;
+}
+
+
+.dashboard-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.dashboard-header h2 {
+    color: #4CAF50;
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.user-info {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+}
+
+.logout-btn {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card h3 {
+    color: #4CAF50;
+    font-size: 2.5rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.stat-card p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.dashboard-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.action-btn {
+    background: linear-gradient(45deg, #2196F3, #1976D2);
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+}
+#speechControls {
+  flex-wrap: wrap; 
+}
+
+
+#parentContainer {
+    display: flex;      
+    justify-content: flex-start; 
+}
+
+@media (max-width: 768px) {
+    .auth-modal-content {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .auth-modal-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .dashboard-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-actions {
+        grid-template-columns: 1fr;
+    }
+    
+    .auth-form input,
+    .auth-form select {
+        font-size: 16px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-card h3 {
+        font-size: 2rem;
+    }
+    
+    .auth-modal-content {
+        padding: 1rem;
+    }
+    
+    .dashboard-container {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+}
+
+
+.loading {
+    position: relative;
+    opacity: 0.7;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid #4CAF50;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+.ai-assistant {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+}
+
+.ai-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: background 0.3s ease;
+}
+
+.ai-button:hover {
+  background-color: #45a049;
+}
+
+.ai-chat {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    width: 300px;
+    height: 400px;
+    background-color: #2c3e50;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    color: white;
+    display: none;              
+    flex-direction: column;
+    overflow: hidden;           
+}
+
+.ai-header {
+  background: #1abc9c;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.ai-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.ai-message {
+  margin: 6px 0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  max-width: 80%;
+  line-height: 1.4;
+}
+
+.ai-message.user {
+  background: #3498db;
+  align-self: flex-end;
+}
+
+.ai-message.bot {
+  background: #34495e;
+  align-self: flex-start;
+}
+.ai-input {
+    flex-shrink: 0;             
+    border-top: 1px solid #555;
+    background-color: #34495e;
+    padding: 8px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="shield-icon"><img src="flogo.jpg" alt="Nyaya Kavach Logo"> </div>
+                <span>Nyaya Kavach</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="complaint.html">File Complaint</a></li>
+                <li><a href="track.html">Track Case</a></li>
+                <li><a href="#footer">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1 class="hero-title">Shield of Justice</h1>
+        <p class="hero-description">
+            Advanced Police Complaint Management System with AI-powered assistance, Aadhar authentication, and real-time case tracking. Justice made accessible, transparent, and efficient for every citizen.
+        </p>
+
+        <div class="user-types">
+            <div class="user-type-card">
+                <div class="user-type-icon">👤</div>
+                <h3>Citizens</h3>
+                <p>File complaints, track case status, get legal assistance, and access emergency services with complete transparency and security.</p>
+                <button class="user-type-button"><a href="/frontend/complaint.html">Access Portal</a></button>
+            </div>
+
+            <div class="user-type-card" onclick="selectUserType('ngo')">
+                <div class="user-type-icon">🤝</div>
+                <h3>NGOs</h3>
+                <p>Support victims, monitor case progress, provide legal aid, and collaborate with authorities for social justice initiatives.</p>
+                <button class="user-type-button"><a href="NGOs.html">NGO Dashboard</a></button>
+            </div>
+
+            <div class="user-type-card" onclick="selectUserType('police')">
+                <div class="user-type-icon">👮</div>
+                <h3>Police</h3>
+                <p>Manage complaints efficiently, track investigations, coordinate with teams, and ensure timely resolution of cases.</p>
+                <button class="user-type-button"><a href="police.html">Officer Login</a></button>
+            </div>
+        </div>
+
+        <div class="main-cta">
+            <button class="cta-button" onclick="showComplaintForm()">Get Started Now</button>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Advanced Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Aadhar Authentication</h3>
+                    <p>Secure identity verification using Aadhar to prevent fake complaints and ensure authenticity of every case filed.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h3>Time-bound Processing</h3>
+                    <p>Automated escalation system with defined timelines. Cases are automatically referred to higher authorities if not resolved within stipulated time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI Legal Assistant</h3>
+                    <p>24/7 AI-powered chatbot to guide users through the complaint process, provide legal advice, and answer queries instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Real-time Tracking</h3>
+                    <p>Live case status updates with SMS/Email notifications. Track your complaint progress with complete transparency.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Smart Evidence Upload</h3>
+                    <p>AI-powered evidence analysis with automatic categorization, OCR for documents, and digital signature verification.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Anonymous Complaints</h3>
+                    <p>Secure anonymous complaint system with blockchain-based identity protection for sensitive cases.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="complaint-form" id="complaint" style="display: none;">
+        <div class="container">
+            <h2>File Your Complaint</h2>
+            
+            <div class="aadhar-verification">
+                <h3>🔐 Aadhar Verification Required</h3>
+                <p>Please verify your identity using Aadhar to proceed with complaint filing</p>
+                <div class="form-group">
+                    <input type="text" id="aadharNumber" placeholder="Enter 12-digit Aadhar Number" maxlength="12">
+                    <button class="cta-button" onclick="verifyAadhar()" style="margin-top: 10px;">Verify Aadhar</button>
+                </div>
+                <div class="verification-status" id="verificationStatus">
+                    <span class="status-pending">⏳ Verification Pending</span>
+                </div>
+            </div>
+
+            <form id="complaintForm" style="opacity: 0.5; pointer-events: none;">
+                <div class="form-group">
+                    <label for="complaintType">Complaint Type</label>
+                    <select id="complaintType" required>
+                        <option value="">Select Complaint Type</option>
+                        <option value="theft">Theft</option>
+                        <option value="fraud">Fraud</option>
+                        <option value="cybercrime">Cybercrime</option>
+                        <option value="domestic">Domestic Violence</option>
+                        <option value="harassment">Harassment</option>
+                        <option value="corruption">Corruption</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="incidentDate">Date of Incident</label>
+                    <input type="datetime-local" id="incidentDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location of Incident</label>
+                    <input type="text" id="location" placeholder="Enter detailed address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Detailed Description</label>
+                    <textarea id="description" rows="5" placeholder="Describe the incident in detail..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="evidence">Upload Evidence</label>
+                    <input type="file" id="evidence" multiple accept=".jpg,.png,.pdf,.mp4,.mp3">
+                    <small>Supported: Images, PDFs, Audio, Video files</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="witnesses">Witness Information</label>
+                    <textarea id="witnesses" rows="3" placeholder="Names and contact details of witnesses (if any)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="priority">Priority Level</label>
+                    <select id="priority" required>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" id="anonymous" style="width: auto; margin-right: 10px;">
+                    <label for="anonymous" style="display: inline;">File as anonymous complaint</label>
+                </div>
+
+                <button type="submit" class="cta-button" style="width: 100%;">Submit Complaint</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="case-tracking" id="tracking" style="display: none;">
+        <div class="container">
+            <h2>Case Tracking</h2>
+            <div class="form-group" style="max-width: 400px; margin-bottom: 2rem;">
+                <input type="text" id="caseId" placeholder="Enter Case ID (e.g., FIR2024001234)">
+                <button class="cta-button" onclick="trackCase()" style="margin-top: 10px;">Track Case</button>
+            </div>
+
+            <div id="caseDetails" style="display: none;">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Complaint Filed</h4>
+                        <p>Your complaint has been successfully registered</p>
+                        <small>Jan 15, 2024 - 10:30 AM</small>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Under Investigation</h4>
+                        <p>Case assigned to investigating officer</p>
+                        <small>Jan 16, 2024 - 2:15 PM</small>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Evidence Collection</h4>
+                        <p>Evidence being collected and analyzed</p>
+                        <small>Jan 18, 2024 - 11:45 AM</small>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 60%"></div>
+                </div>
+                <p><strong>Case Progress:</strong> 60% Complete</p>
+                <p><strong>Expected Resolution:</strong> Feb 15, 2024</p>
+                <p><strong>Next Hearing:</strong> Jan 25, 2024 at 11:00 AM</p>
+            </div>
+        </div>
+    </section>
+ 
+      <div class="ai-assistant">
+  <button class="ai-button" onclick="toggleAIChat()">🤖</button>
+  <div class="ai-chat" id="aiChat">
+    <div class="ai-chat-header">
+      <span>Legal AI Assistant</span>
+      <button onclick="toggleAIChat()" style="background:none;border:none;color:white;font-size:18px;cursor:pointer;">×</button>
+    </div>
+    <div class="ai-chat-messages" id="chatMessages">
+      <div class="ai-message">
+        Hello! I'm your AI legal assistant. I can help you with:
+        <ul>
+          <li>Filing complaints</li>
+          <li>Legal procedures</li>
+          <li>Case status queries</li>
+          <li>Legal advice</li>
+        </ul>
+        How can I assist you today?
+      </div>
+    </div>
+    <div class="ai-input">
+      <div class="ai-input-row">
+        <input type="text" id="chatInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter') sendMessage()">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+      <div class="ai-input-row">
+        <select id="languageSelect">
+          <option value="en-IN">English</option>
+          <option value="hi-IN">Hindi</option>
+          <option value="kn-IN">Kannada</option>
+        </select>
+        <button id="micButton">🎤</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+       <div class="notification" id="notification"></div>
+
+    <footer class="site-footer" id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="shield-icon">⚖️</div>
+                        <h3>Nyaya Kavach</h3>
+                        <p>Shield of Justice</p>
+                    </div>
+                    <p class="footer-description">
+                        Advanced Police Complaint Management System ensuring transparent, 
+                        efficient, and accessible justice for all citizens.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook">📘</a>
+                        <a href="#" aria-label="Twitter">🐦</a>
+                        <a href="#" aria-label="LinkedIn">💼</a>
+                        <a href="#" aria-label="YouTube">📺</a>
+                    </div>
+                </div>
+    
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#complaint">File Complaint</a></li>
+                        <li><a href="#tracking">Track Case</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#help">Help Center</a></li>
+                    </ul>
+                </div>
+    
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#security">Security Policy</a></li>
+                        <li><a href="#disclaimer">Disclaimer</a></li>
+                        <li><a href="#accessibility">Accessibility</a></li>
+                        <li><a href="#grievance">Grievance Redressal</a></li>
+                    </ul>
+                </div>
+    
+                <div class="footer-section">
+                    <h4>Emergency Contacts</h4>
+                    <div class="emergency-contacts">
+                        <div class="contact-item">
+                            <span class="contact-icon">🚨</span>
+                            <div>
+                                <strong>Police Emergency</strong>
+                                <p>100</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">🚑</span>
+                            <div>
+                                <strong>Medical Emergency</strong>
+                                <p>108</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">🔥</span>
+                            <div>
+                                <strong>Fire Department</strong>
+                                <p>101</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">👩‍💼</span>
+                            <div>
+                                <strong>Women Helpline</strong>
+                                <p>1091</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="footer-section">
+                    <h4>Contact Information</h4>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            <div>
+                                <strong>Address</strong>
+                                <p>Police Headquarters<br>
+                                Government Complex<br>
+                                Bengaluru,Karnataka 000000</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📞</span>
+                            <div>
+                                <strong>Helpline</strong>
+                                <p>1234567890</p>
+                                <small>24/7 Support Available</small>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">✉️</span>
+                            <div>
+                                <strong>Email</strong>
+                                <p>support@nyayakavach.gov.in</p>
+                                <small>Response within 24 hours</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="footer-stats">
+                <div class="stat-item">
+                    <div class="stat-number">1+</div>
+                    <div class="stat-label">Cases Resolved</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Available</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2.5 Days</div>
+                    <div class="stat-label">Avg Response Time</div>
+                </div>
+            </div>
+    
+            <div class="footer-bottom">
+                <div class="footer-bottom-left">
+                    <p>&copy; 2025 Nyaya Kavach.All rights reserved.</p>
+                    <p class="footer-subtitle">Developed by TEAM NYAYA KAVACH</p>
+                </div>
+                <div class="footer-bottom-right">
+                    <div class="security-badges">
+                        <span class="security-badge">🔒 SSL Secured</span>
+                        <span class="security-badge">🛡️ ISO 27001</span>
+                        <span class="security-badge">✅ Govt. Certified</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+// ---------------- USER TYPE HANDLING ----------------
+     function selectUserType(type) {
+    const messages = {
+        citizen: 'Redirecting to Citizen Portal...',
+        ngo: 'Redirecting to NGO Dashboard...',
+        police: 'Redirecting to Police Login...'
+    };
+    showNotification(messages[type], 'info');
+
+    switch(type) {
+        case 'citizen':
+            setTimeout(() => {
+                showComplaintForm();
+                showNotification('Welcome to Citizen Portal. Please verify your Aadhar to proceed.', 'success');
+            }, 1500);
+            break;
+        case 'ngo':
+            showNGOLoginModal();
+            break;
+        case 'police':
+            showPoliceLoginModal();
+            break;
+        default:
+            showNotification('Invalid user type selected', 'error');
+    }
+}
+
+function handleCitizenAccess() {
+    setTimeout(() => {
+        showComplaintForm();
+        showNotification('Welcome to Citizen Portal. Please verify your Aadhar to proceed.', 'success');
+    }, 1500);
+}
+
+// function handleNGOAccess() {
+//     showNGOLoginModal();
+// }
+
+// function handlePoliceAccess() {
+//     showPoliceLoginModal();
+// }
+
+function showNGOLoginModal() {
+    const modal = createAuthModal('NGO', 'ngo-portal');
+    document.body.appendChild(modal);
+    modal.style.display = 'flex';
+}
+
+function showPoliceLoginModal() {
+    const modal = createAuthModal('Police', 'police-portal');
+    document.body.appendChild(modal);
+    modal.style.display = 'flex';
+}
+
+function createAuthModal(userType, portalType) {
+    const modal = document.createElement('div');
+    modal.className = 'auth-modal';
+    modal.id = `${portalType}-modal`;
+
+    modal.innerHTML = `
+        <div class="auth-modal-content">
+            <div class="auth-modal-header">
+                <h2>${userType} Portal Login</h2>
+                <button class="close-modal" onclick="closeAuthModal('${modal.id}')">&times;</button>
+            </div>
+            
+            <form class="auth-form" onsubmit="authenticateUser(event, '${portalType}')">
+                <div class="form-group">
+                    <label for="${portalType}-id">Official ID:</label>
+                    <input type="text" id="${portalType}-id" placeholder="Enter your ${userType} ID" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="${portalType}-password">Password:</label>
+                    <input type="password" id="${portalType}-password" placeholder="Enter your password" required>
+                </div>
+                
+                ${userType === 'Police' ? `
+                <div class="form-group">
+                    <label for="police-station">Police Station:</label>
+                    <select id="police-station" required>
+                        <option value="">Select Police Station</option>
+                        <option value="bhubaneswar-central">Bhubaneswar Central</option>
+                        <option value="saheed-nagar">Saheed Nagar</option>
+                        <option value="khandagiri">Khandagiri</option>
+                        <option value="mancheswar">Mancheswar</option>
+                        <option value="airfield">Airfield</option>
+                    </select>
+                </div>
+                ` : ''}
+                
+                ${userType === 'NGO' ? `
+                <div class="form-group">
+                    <label for="ngo-registration">NGO Registration Number:</label>
+                    <input type="text" id="ngo-registration" placeholder="Registration Number" required>
+                </div>
+                ` : ''}
+                
+                <div class="form-group">
+                    <input type="checkbox" id="${portalType}-remember" style="width: auto; margin-right: 10px;">
+                    <label for="${portalType}-remember" style="display: inline;">Remember me</label>
+                </div>
+                
+                <button type="submit" class="auth-button">Login to ${userType} Portal</button>
+            </form>
+            
+            <div class="auth-links">
+                <a href="#" onclick="showForgotPassword('${portalType}')">Forgot Password?</a>
+                ${userType === 'NGO' ? '<a href="#" onclick="showNGORegistration()">Register New NGO</a>' : ''}
+            </div>
+        </div>
+    `;
+    return modal;
+}
+
+function authenticateUser(event, portalType) {
+    event.preventDefault();
+
+    const credentials = {
+        id: document.getElementById(`${portalType}-id`).value,
+        password: document.getElementById(`${portalType}-password`).value
+    };
+
+    if (portalType === 'police-portal') {
+        credentials.station = document.getElementById('police-station').value;
+    } else if (portalType === 'ngo-portal') {
+        credentials.registration = document.getElementById('ngo-registration').value;
+    }
+
+    const submitButton = event.target.querySelector('.auth-button');
+    const originalText = submitButton.textContent;
+    submitButton.textContent = 'Authenticating...';
+    submitButton.disabled = true;
+
+    setTimeout(() => {
+        if (validateCredentials(credentials, portalType)) {
+            closeAuthModal(`${portalType}-modal`);
+            redirectToPortal(portalType, credentials);
+        } else {
+            showNotification('Invalid credentials. Please try again.', 'error');
+            submitButton.textContent = originalText;
+            submitButton.disabled = false;
+        }
+    }, 2000);
+}
+
+function validateCredentials(credentials, portalType) {
+    const validCredentials = {
+        'police-portal': {
+            'OFF001': 'police123',
+            'OFF002': 'secure456',
+            'INSP001': 'inspector789'
+        },
+        'ngo-portal': {
+            'NGO001': 'ngo123',
+            'NGO002': 'helper456',
+            'NGO003': 'support789'
+        }
+    };
+    return validCredentials[portalType] && 
+           validCredentials[portalType][credentials.id] === credentials.password;
+}
+
+function redirectToPortal(portalType, userInfo) {
+    showNotification('Login successful! Redirecting...', 'success');
+    setTimeout(() => {
+        if (portalType === 'police-portal') {
+            redirectToPolicePortal(userInfo);
+        } else if (portalType === 'ngo-portal') {
+            redirectToNGOPortal(userInfo);
+        }
+    }, 1500);
+}
+
+function redirectToPolicePortal(userInfo) {
+    sessionStorage.setItem('userType', 'police');
+    sessionStorage.setItem('userId', userInfo.id);
+    sessionStorage.setItem('userStation', userInfo.station);
+    showPoliceDashboard(userInfo);
+}
+
+function redirectToNGOPortal(userInfo) {
+    sessionStorage.setItem('userType', 'ngo');
+    sessionStorage.setItem('userId', userInfo.id);
+    sessionStorage.setItem('userRegistration', userInfo.registration);
+    window.location.href = 'NGOs.html';
+}
+
+function showPoliceDashboard(userInfo) {
+    const dashboardHTML = `
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h2>Police Dashboard - ${userInfo.station}</h2>
+                <div class="user-info">Welcome, Officer ${userInfo.id}</div>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+            </div>
+            <div class="dashboard-stats">
+                <div class="stat-card"><h3>12</h3><p>Pending Cases</p></div>
+                <div class="stat-card"><h3>5</h3><p>New Complaints</p></div>
+                <div class="stat-card"><h3>28</h3><p>Resolved This Month</p></div>
+            </div>
+            <div class="dashboard-actions">
+                <button onclick="viewComplaints()" class="action-btn">View Complaints</button>
+                <button onclick="updateCaseStatus()" class="action-btn">Update Cases</button>
+                <button onclick="generateReports()" class="action-btn">Generate Reports</button>
+            </div>
+        </div>
+    `;
+    document.querySelector('.hero').innerHTML = dashboardHTML;
+    document.querySelector('.features').style.display = 'none';
+}
+
+function closeAuthModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.removeChild(modal);
+    }
+}
+
+function showForgotPassword(portalType) {
+    const userType = portalType.includes('police') ? 'Police' : 'NGO';
+    showNotification(`Password reset link will be sent to your registered ${userType} email.`, 'info');
+    const email = prompt(`Enter your registered ${userType} email:`);
+    if (email) showNotification('Password reset instructions sent to your email.', 'success');
+}
+
+function showNGORegistration() {
+    showNotification('NGO registration form will open in a new window.', 'info');
+}
+
+function logout() {
+    sessionStorage.clear();
+    showNotification('Logged out successfully', 'success');
+    location.reload();
+}
+
+// ---------------- CITIZEN COMPLAINT ----------------
+function showComplaintForm() {
+    document.getElementById('complaint').style.display = 'block';
+    document.getElementById('tracking').style.display = 'none';
+    document.getElementById('complaint').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showTracking() {
+    document.getElementById('tracking').style.display = 'block';
+    document.getElementById('complaint').style.display = 'none';
+    document.getElementById('tracking').scrollIntoView({ behavior: 'smooth' });
+}
+
+function verifyAadhar() {
+    const aadharNumber = document.getElementById('aadharNumber').value;
+    const statusElement = document.getElementById('verificationStatus');
+    if (aadharNumber.length !== 12 || !/^\d+$/.test(aadharNumber)) {
+        showNotification('Please enter a valid 12-digit Aadhar number', 'error');
+        return;
+    }
+    statusElement.innerHTML = '<span class="status-pending">⏳ Verifying...</span>';
+    setTimeout(() => {
+        const isValid = Math.random() > 0.2;
+        if (isValid) {
+            statusElement.innerHTML = '<span class="status-verified">✅ Verified Successfully</span>';
+            document.getElementById('complaintForm').style.opacity = '1';
+            document.getElementById('complaintForm').style.pointerEvents = 'auto';
+            showNotification('Aadhar verification successful! You can now file your complaint.', 'success');
+        } else {
+            statusElement.innerHTML = '<span class="status-failed">❌ Verification Failed</span>';
+            showNotification('Aadhar verification failed. Please try again.', 'error');
+        }
+    }, 2000);
+}
+
+document.getElementById('complaintForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const caseId = 'FIR' + new Date().getFullYear() + Math.random().toString().substr(2, 6);
+    showNotification(`Complaint filed successfully! Your Case ID is: ${caseId}`, 'success');
+    this.reset();
+    document.getElementById('verificationStatus').innerHTML = '<span class="status-pending">⏳ Verification Pending</span>';
+    document.getElementById('complaintForm').style.opacity = '0.5';
+    document.getElementById('complaintForm').style.pointerEvents = 'none';
+    document.getElementById('aadharNumber').value = '';
+});
+
+function trackCase() {
+    const caseId = document.getElementById('caseId').value;
+    const caseDetails = document.getElementById('caseDetails');
+    if (!caseId) {
+        showNotification('Please enter a valid Case ID', 'error');
+        return;
+    }
+    setTimeout(() => {
+        caseDetails.style.display = 'block';
+        showNotification('Case details loaded successfully', 'success');
+    }, 1000);
+}
+
+// ---------------- AI CHATBOT ----------------
+function toggleAIChat() {
+    const chatBox = document.getElementById("aiChat");
+    chatBox.style.display = chatBox.style.display === "flex" ? "none" : "flex";
+}
+
+function addMessage(sender, text) {
+    const msgContainer = document.getElementById("chatMessages");
+    const msg = document.createElement("div");
+    msg.className = sender === "user" ? "user-message" : "ai-message";
+    msg.innerText = text;
+    msgContainer.appendChild(msg);
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+}
+
+function sendMessage() {
+    const input = document.getElementById("chatInput");
+    const message = input.value.trim();
+    if (!message) return;
+
+    addMessage("user", message);
+    input.value = "";
+
+    const msg = message.toLowerCase();
+
+    if (msg.includes("complain") || msg.includes("file") || msg.includes("register")) {
+        addMessage("ai", "Redirecting you to Complaint Section...");
+        setTimeout(() => window.location.href = "complaint.html", 1000);
+        return;
+    }
+    if (msg.includes("track") || msg.includes("status") || msg.includes("case")) {
+        addMessage("ai", "Redirecting you to Case Tracking...");
+        setTimeout(() => window.location.href = "track.html", 1000);
+        return;
+    }
+    if (msg.includes("police") || msg.includes("authority")) {
+        window.location.href = "police.html";
+        return;
+    }
+    if (msg.includes("faq") || msg.includes("questions")) {
+        document.getElementById("faq").scrollIntoView({ behavior: "smooth" });
+        return;
+    }
+    if (msg.includes("contact") || msg.includes("helpdesk") || msg.includes("support")) {
+        document.getElementById("contact-info").scrollIntoView({ behavior: "smooth" });
+        return;
+    }
+    if (msg.includes("fir")) {
+        addMessage("ai", "An FIR (First Information Report) is a written document prepared by police when they receive information about a cognizable offence.");
+        return;
+    }
+    if (msg.includes("documents") || msg.includes("docs")) {
+        addMessage("ai", "You generally need ID proof (like Aadhaar), a written complaint, and supporting evidence (photos, contracts, etc.).");
+        return;
+    }
+    if (msg.includes("how to file")) {
+        addMessage("ai", "You can file a complaint online through this portal or visit your nearest police station.");
+        return;
+    }
+
+    addMessage("ai", "I’m not sure about that. Try asking about complaints, case tracking, or legal help.");
+}
+
+// ---------------- VOICE INPUT ----------------
+document.addEventListener("DOMContentLoaded", () => {
+    const micButton = document.getElementById('micButton');
+    const languageSelect = document.getElementById('languageSelect');
+    const chatInput = document.getElementById("chatInput");
+
+    function startVoiceInput() {
+        if (!('webkitSpeechRecognition' in window)) {
+            alert("Speech recognition not supported in this browser.");
+            return;
+        }
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = languageSelect.value;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = function () {
+            micButton.style.backgroundColor = "#27ae60"; 
+        };
+
+        recognition.onresult = function (event) {
+            let transcript = event.results[0][0].transcript;
+            if (recognition.lang === "hi-IN") {
+                if (transcript.includes("शिकायत") || transcript.includes("कंप्लेंट")) transcript = "complain";
+                else if (transcript.includes("स्थिति") || transcript.includes("ट्रैक")) transcript = "track case";
+            }
+            if (recognition.lang === "kn-IN") {
+                if (transcript.includes("ದೂರು") || transcript.includes("ಕಂಪ್ಲೇಂಟ್")) transcript = "complain";
+                else if (transcript.includes("ಟ್ರಾಕ್") || transcript.includes("ಸ್ಥಿತಿ")) transcript = "track case";
+            }
+            chatInput.value = transcript;
+            sendMessage();
+        };
+
+        recognition.onerror = function (event) {
+            alert("Mic error: " + event.error);
+        };
+
+        recognition.onend = function () {
+            micButton.style.backgroundColor = "#e74c3c"; 
+        };
+
+        recognition.start();
+    }
+
+    if (micButton) {
+        micButton.addEventListener("click", startVoiceInput);
+    }
+});
+
+// ---------------- NOTIFICATION ----------------
+function showNotification(message, type = 'info') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = `notification show ${type}`;
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 5000);
+}
+</script>
+
+
+</body>
+</html>
